@@ -76,7 +76,7 @@ const News = ( props ) => {
 
   return (
     <div className='container my-3'>
-      <h1 style={{ marginTop: '90px' }}>NewsHamper - Top headlines on {capitalconvert( props.category )}</h1>
+      <h1 style={{ marginTop: '90px' }}>TrendWave - Top headlines on {capitalconvert( props.category )}</h1>
       {loading && <Spinner />}
       <InfiniteScroll
         dataLength={articles.length}
