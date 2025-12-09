@@ -46,7 +46,7 @@ const News = ( props ) => {
   }, [ props.country, props.category, props.pageSize, props.setProgress ] );
 
   useEffect( () => {
-    document.title = `${ capitalconvert( props.category ) }-NewsMonkey`;
+    document.title = `${ capitalconvert( props.category ) }-TrendWave`;
     setArticles( [] );
     setPage( 1 );
     setTotalResults( 0 );
