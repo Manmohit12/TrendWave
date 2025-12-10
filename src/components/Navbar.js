@@ -25,12 +25,17 @@ const Navbar = () => {
     letterSpacing: "0.3px",
     color: "#404040",
     margin: "0 0.75rem",
-    padding: "0.5rem 0 !important",
+    padding: "0.5rem 0",
     borderRadius: "0",
     transition: "all 0.3s ease",
     position: "relative",
     borderBottom: "2px solid transparent",
   };
+
+  // centralize small spacing values to avoid accidental undefined variable usage
+  const smallMargin = "1.5rem";
+  const logoLeft = "2rem";
+  const logoRight = "0.5rem";
 
   const navItemHoverStyle = ( e ) => {
     e.target.style.color = "#000";
@@ -45,6 +50,7 @@ const Navbar = () => {
   return (
     <div>
       <nav className="navbar fixed-top navbar-expand-lg navbar-light" style={navStyle}>
+        <img alt="Logo" src="trend.png" style={{ height: "40px", marginLeft: logoLeft, marginRight: logoRight }} />
         <Link className="navbar-brand" to="/" style={brandStyle}>
           TrendWave
         </Link>
@@ -56,12 +62,12 @@ const Navbar = () => {
           aria-controls="navbarNavDropdown"
           aria-expanded="false"
           aria-label="Toggle navigation"
-          style={{ borderColor: "#e0e0e0", marginRight: "1.5rem" }}
+          style={{ borderColor: "#e0e0e0", marginRight: smallMargin }}
         >
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul className="navbar-nav ml-auto" style={{ marginRight: "1.5rem" }}>
+          <ul className="navbar-nav ml-auto" style={{ marginRight: smallMargin }}>
             <li className="nav-item">
               <Link
                 className="nav-link"
