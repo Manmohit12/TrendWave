@@ -20,7 +20,7 @@ const News = ( props ) => {
     const { country, category, pageSize } = props;
 
     props.setProgress( 10 );
-    let url = `https://newsapi.org/v2/top-headlines?country=${ country }&category=${ category }&apiKey=2291f288214a436f93bd1debfd539a18&page=${ page }&pageSize=${ pageSize }`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${ country }&category=${ category }&apiKey=${ process.env.REACT_APP_NEWS_API_KEY }&page=${ page }&pageSize=${ pageSize }`;
     let data = await fetch( url );
     props.setProgress( 30 );
     let parsedData = await data.json();

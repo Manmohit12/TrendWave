@@ -34,7 +34,7 @@ A modern, responsive React-based news aggregator application designed to deliver
 - **NewsAPI**: Fetches top headlines using endpoints like `https://newsapi.org/v2/top-headlines?country=us&category={category}&apiKey={key}&page={page}&pageSize={size}`.
 - **Data Structure**: Articles include source, author, title, description, URL, image URL, and publication date.
 - **Sample Data**: The `sampleOutput.json` file contains example API responses (e.g., cricket-related news).
-- **Limitations**: API key is currently hardcoded; for production, use environment variables. Free tier limits requests.
+- **Limitations**: API key is stored in environment variables for security. Free tier limits requests.
 
 ## Technologies Used
 
@@ -80,11 +80,11 @@ A modern, responsive React-based news aggregator application designed to deliver
 
 ## API Key
 
-The app uses a hardcoded API key for demonstration. For production, obtain your own key from NewsAPI and update the code accordingly. Consider using environment variables for security.
+The app uses an API key stored in a `.env` file for security. Obtain your own key from [NewsAPI](https://newsapi.org/) and add it to the `.env` file as `REACT_APP_NEWS_API_KEY=your_api_key_here`.
 
 ## Potential Improvements
 
-- **Security**: Move API key to environment variables (.env file).
+- **Security**: API key is now stored in environment variables (.env file).
 - **Caching**: Implement local storage or service worker for offline access.
 - **Search Functionality**: Add search bar for keyword-based news queries.
 - **User Preferences**: Allow users to select countries or customize categories.
