@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import Newsitem from './Newsitem';
 import Spinner from './Spinner';
 import PropTypes from 'prop-types';
@@ -20,40 +20,48 @@ const News = ( props ) => {
     const { country, category, pageSize } = props;
 
     props.setProgress( 10 );
-    let url = `https://newsapi.org/v2/top-headlines?country=${ country }&category=${ category }&apiKey=${ process.env.REACT_APP_NEWS_API_KEY }&page=${ page }&pageSize=${ pageSize }`;
+    const currentPage = pageRef.current;
+    let url = `https://newsapi.org/v2/top-headlines?country=${ country }&category=${ category }&apiKey=${ process.env.REACT_APP_NEWS_API_KEY }&page=${ currentPage }&pageSize=${ pageSize }`;
     let data = await fetch( url );
     props.setProgress( 30 );
     let parsedData = await data.json();
     props.setProgress( 50 );
-    let newArticlesCount = 0;
     if ( parsedData.articles && Array.isArray( parsedData.articles ) ) {
       setArticles( prev => {
         const newArticles = parsedData.articles.filter( article => !prev.some( existing => existing.url === article.url ) );
-        newArticlesCount = newArticles.length;
         return [ ...prev, ...newArticles ];
       } );
-      setHasMore( newArticlesCount > 0 );
+      const total = parsedData.totalResults || 0;
+      setTotalResults( total );
+      // If there are more pages after the current one
+      setHasMore( currentPage * pageSize < total );
     } else {
       console.error( 'Invalid articles data:', parsedData );
       setHasMore( false );
     }
-    if ( page === 1 ) {
-      setTotalResults( parsedData.totalResults || 0 );
+    if ( currentPage === 1 ) {
       setLoading( false );
     }
     props.setProgress( 100 );
+    // advance the ref and state page counter
+    pageRef.current = currentPage + 1;
     setPage( prev => prev + 1 );
   }, [ props.country, props.category, props.pageSize, props.setProgress ] );
+
+  const pageRef = useRef( 1 );
 
   useEffect( () => {
     document.title = `${ capitalconvert( props.category ) }-TrendWave`;
     setArticles( [] );
     setPage( 1 );
+    pageRef.current = 1;
     setTotalResults( 0 );
     setHasMore( true );
     setLoading( true );
     fetchMoreData();
-  }, [ props.category, fetchMoreData ] );
+    // Only run when category changes (fetchMoreData is stable w.r.t props so it's safe)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ props.category ] );
 
   const getBadgeClass = ( category ) => {
     switch ( category ) {
@@ -81,18 +89,18 @@ const News = ( props ) => {
       <InfiniteScroll
         dataLength={articles.length}
         next={fetchMoreData}
-        hasMore={articles.length !== totalResults}
+        hasMore={hasMore}
         loader={<Spinner />}
       >
         <div className="container">
           <div className="row">
             {articles.map( ( element ) => {
               return (
-                <div className="col-md-4 my-2" key={element.url}>
+                <div className="col-12 col-sm-6 col-md-3 my-2" key={element.url}>
                   <Newsitem
-                    title={element.title ? element.title.slice( 0, 45 ) : ""}
+                    title={element.title || ""}
                     imageUrl={element.urlToImage}
-                    description={element.description ? element.description.slice( 0, 88 ) : ""}
+                    description={element.description || ""}
                     newsUrl={element.url}
                     author={element.author}
                     date={element.publishedAt}
