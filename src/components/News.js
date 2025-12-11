@@ -5,6 +5,14 @@ import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 // import { useFormState } from 'react-dom'; // Remove this line as it's not used
 
+// Helpful debug: log the bundled env var at runtime so developers can spot issues quickly
+/* eslint-disable no-console */
+console.log( 'REACT_APP_NEWS_API_KEY=', process.env.REACT_APP_NEWS_API_KEY );
+if ( !process.env.REACT_APP_NEWS_API_KEY ) {
+  console.error( 'Environment variable REACT_APP_NEWS_API_KEY is undefined.\n- Ensure `.env` exists in the project root.\n- Use the name `REACT_APP_NEWS_API_KEY`.\n- Restart the dev server after changing `.env` (run `npm start`).' );
+}
+/* eslint-enable no-console */
+
 const News = ( props ) => {
   const [ articles, setArticles ] = useState( [] );
   const [ loading, setLoading ] = useState( true );
